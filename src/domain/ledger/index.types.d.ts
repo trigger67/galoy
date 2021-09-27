@@ -129,6 +129,10 @@ type TxVolume = {
 }
 
 interface ILedgerService {
+  getTransactionsByHash(
+    paymentHash: PaymentHash,
+  ): Promise<LedgerTransaction[] | LedgerServiceError>
+
   getLiabilityTransactions(
     liabilitiesAccountId: LiabilitiesAccountId,
   ): Promise<LedgerTransaction[] | LedgerServiceError>

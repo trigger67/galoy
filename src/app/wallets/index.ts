@@ -1,6 +1,7 @@
 export * from "./create-on-chain-address"
 export * from "./get-balance-for-wallet"
 export * from "./get-csv-for-wallets"
+export * from "./get-transactions-by-hash"
 export * from "./get-transactions-for-wallet"
 export * from "./get-account-transactions-for-contact"
 export * from "./get-last-on-chain-address"
