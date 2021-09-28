@@ -42,6 +42,7 @@ import {
   lnNoAmountInvoicePaymentSend,
 } from "@app/lightning"
 import { LightningServiceError, PaymentSendStatus } from "@domain/bitcoin/lightning"
+import { lnInvoiceFeeProbe } from "@app/lightning/get-lightning-fee"
 
 const date = Date.now() + 1000 * 60 * 60 * 24 * 8
 // required to avoid oldEnoughForWithdrawal validation
@@ -506,7 +507,8 @@ describe("UserWallet - Lightning Pay", () => {
       initialFee: 0,
       fn: function fn(wallet) {
         return async (input): Promise<PaymentSendStatus | ApplicationError> => {
-          await wallet.getLightningFee(input)
+          const feeFromProbe = await lnInvoiceFeeProbe({ paymentRequest: input.invoice })
+          if (feeFromProbe instanceof Error) throw feeFromProbe
           const paymentResult = await lnInvoicePaymentSendWithTwoFA({
             paymentRequest: input.invoice as EncodedPaymentRequest,
             memo: input.memo,
