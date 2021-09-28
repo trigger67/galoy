@@ -42,6 +42,10 @@ import {
   SemanticAttributes,
   ENDUSER_ALIAS,
 } from "@services/tracing"
+import {
+  lnInvoiceFeeProbe,
+  lnNoAmountInvoiceFeeProbe,
+} from "@app/lightning/get-lightning-fee"
 
 const graphqlLogger = baseLogger.child({ module: "graphql" })
 
@@ -359,7 +363,19 @@ const resolvers = {
 
         return status.value
       },
-      getFee: async ({ amount, invoice }) => wallet.getLightningFee({ amount, invoice }),
+      getFee: async ({ amount, invoice }) => {
+        const feeSatAmount =
+          amount && amount > 0
+            ? await lnNoAmountInvoiceFeeProbe({
+                amount,
+                paymentRequest: invoice,
+              })
+            : await lnInvoiceFeeProbe({
+                paymentRequest: invoice,
+              })
+        if (feeSatAmount instanceof Error) throw feeSatAmount
+        return feeSatAmount
+      },
     }),
     earnCompleted: async (_, { ids }, { wallet }) => wallet.addEarn(ids),
     onchain: (_, __, { wallet }) => ({
