@@ -40,10 +40,10 @@ export const loadLedger = ({
 
 export const LedgerService = (): ILedgerService => {
   const getTransactionsByHash = async (
-    paymentHash: PaymentHash,
+    hash: PaymentHash | TxId,
   ): Promise<LedgerTransaction[] | LedgerServiceError> => {
     try {
-      const { results } = await MainBook.ledger({ hash: paymentHash })
+      const { results } = await MainBook.ledger({ hash })
       return results.map((tx) => translateToLedgerTx(tx))
     } catch (err) {
       return new UnknownLedgerError(err)

@@ -5,6 +5,11 @@ import Timestamp from "../scalar/timestamp"
 import PaymentInitiationMethod from "../scalar/payment-initiation-method"
 import SettlementMethod from "../scalar/settlement-method"
 import SatAmount from "../scalar/sat-amount"
+import LnTransaction from "../object/ln-transaction"
+import OnChainTransaction from "../object/onchain-transaction"
+import WalletNameTransaction from "../object/wallet-name-transaction"
+import TxStatus from "../scalar/tx-status"
+import WalletName from "../scalar/wallet-name"
 // import BtcUsdPrice from "../object/btc-usd-price"
 // import Memo from "../scalar/memo"
 // import TxStatus from "../scalar/tx-status"
@@ -12,8 +17,16 @@ import SatAmount from "../scalar/sat-amount"
 
 const ITransaction = new GT.Interface({
   name: "Transaction",
+  resolveType(obj) {
+    if (obj.initiationVia === "lightning") return LnTransaction
+    if (obj.initiationVia === "onchain") return OnChainTransaction
+    return WalletNameTransaction
+  },
   fields: () => ({
     id: {
+      type: GT.NonNullID,
+    },
+    walletId: {
       type: GT.NonNullID,
     },
     initiationVia: {
@@ -37,9 +50,15 @@ const ITransaction = new GT.Interface({
     // memo: {
     //   type: Memo,
     // },
-    // status: {
-    //   type: TxStatus,
-    // },
+    status: {
+      type: TxStatus,
+    },
+    recipientId: {
+      type: WalletName,
+      description: `Settlement destination:
+  Could be null when originalDestination is onChain/LN
+  and the payeee does not have a WalletName`,
+    },
     createdAt: {
       type: GT.NonNull(Timestamp),
     },

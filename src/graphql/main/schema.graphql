@@ -134,10 +134,19 @@ type TransactionEdge {
 
 interface Transaction {
   id: ID!
+  walletId: ID!
   initiationVia: PaymentInitiationMethod!
   settlementVia: SettlementMethod!
   settlementAmount: SatAmount!
   settlementFee: SatAmount!
+  status: TxStatus
+
+  """
+  Settlement destination:
+    Could be null when originalDestination is onChain/LN
+    and the payeee does not have a WalletName
+  """
+  recipientId: WalletName
   createdAt: Timestamp!
 }
 
@@ -158,15 +167,21 @@ enum SettlementMethod {
 """
 scalar SatAmount
 
-"""
-Date field, serialized as the number of milliseconds since the Unix Epoch
-"""
-scalar Timestamp
+enum TxStatus {
+  PENDING
+  SUCCESS
+  FAILURE
+}
 
 """
 Unique identifier of an account wallet
 """
 scalar WalletName
+
+"""
+Date field, serialized as the number of milliseconds since the Unix Epoch
+"""
+scalar Timestamp
 
 type BTCWallet implements Wallet {
   id: ID!
@@ -197,10 +212,12 @@ type BTCWallet implements Wallet {
 
 type WalletNameTransaction implements Transaction {
   id: ID!
+  walletId: ID!
   initiationVia: PaymentInitiationMethod!
   settlementVia: SettlementMethod!
   settlementAmount: SatAmount!
   settlementFee: SatAmount!
+  status: TxStatus
   createdAt: Timestamp!
 
   """
@@ -208,17 +225,26 @@ type WalletNameTransaction implements Transaction {
     Could be null when originalDestination is onChain/LN
     and the payeee does not have a WalletName
   """
-  recipient: WalletName
+  recipientId: WalletName
 }
 
 type OnChainTransaction implements Transaction {
   id: ID!
+  walletId: ID!
   initiationVia: PaymentInitiationMethod!
   settlementVia: SettlementMethod!
   settlementAmount: SatAmount!
   settlementFee: SatAmount!
+  status: TxStatus
   createdAt: Timestamp!
   address: OnChainAddress!
+
+  """
+  Settlement destination:
+    Could be null when originalDestination is onChain/LN
+    and the payeee does not have a WalletName
+  """
+  recipientId: WalletName
 }
 
 """
@@ -228,12 +254,21 @@ scalar OnChainAddress
 
 type LnTransaction implements Transaction {
   id: ID!
+  walletId: ID!
   initiationVia: PaymentInitiationMethod!
   settlementVia: SettlementMethod!
   settlementAmount: SatAmount!
   settlementFee: SatAmount!
+  status: TxStatus
   createdAt: Timestamp!
   paymentHash: LnPaymentHash!
+
+  """
+  Settlement destination:
+    Could be null when originalDestination is onChain/LN
+    and the payeee does not have a WalletName
+  """
+  recipientId: WalletName
 }
 
 scalar LnPaymentHash

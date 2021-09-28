@@ -4,6 +4,7 @@ import PaymentInitiationMethod from "../scalar/payment-initiation-method"
 import SatAmount from "../scalar/sat-amount"
 import SettlementMethod from "../scalar/settlement-method"
 import Timestamp from "../scalar/timestamp"
+import TxStatus from "../scalar/tx-status"
 // import Memo from "../scalar/memo"
 // import TxDirection from "../scalar/tx-direction"
 // import TxStatus from "../scalar/tx-status"
@@ -16,6 +17,9 @@ const WalletNameTransaction = new GT.Object({
   isTypeOf: (source) => source.type === "wallet-name", // TODO: make this work
   fields: () => ({
     id: {
+      type: GT.NonNullID,
+    },
+    walletId: {
       type: GT.NonNullID,
     },
     initiationVia: {
@@ -39,15 +43,15 @@ const WalletNameTransaction = new GT.Object({
     // memo: {
     //   type: Memo,
     // },
-    // status: {
-    //   type: TxStatus,
-    // },
+    status: {
+      type: TxStatus,
+    },
     createdAt: {
       type: GT.NonNull(Timestamp),
     },
 
     // Non-interface fields
-    recipient: {
+    recipientId: {
       type: WalletName,
       description: `Settlement destination:
   Could be null when originalDestination is onChain/LN
