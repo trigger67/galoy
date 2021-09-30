@@ -2,6 +2,7 @@ type LightningError = import("./errors").LightningError
 type LnInvoiceDecodeError = import("./errors").LnInvoiceDecodeError
 type LightningServiceError = import("./errors").LightningServiceError
 type NoValidNodeForPubkeyError = import("./errors").NoValidNodeForPubkeyError
+type RouteNotFoundError = import("./errors").RouteNotFoundError
 
 declare const invoiceExpirationSymbol: unique symbol
 type InvoiceExpiration = Date & { [invoiceExpirationSymbol]: never }
