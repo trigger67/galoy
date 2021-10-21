@@ -7,7 +7,7 @@ export const NotificationsService = (logger: Logger): INotificationsService => {
   const onChainTransactionReceived = async ({
     amount,
     walletId,
-    txId,
+    txHash,
   }: OnChainTxReceivedArgs) => {
     try {
       // work around to move forward before re-wrighting the whole notifications module
@@ -19,7 +19,7 @@ export const NotificationsService = (logger: Logger): INotificationsService => {
         user,
         logger: logger,
         amount,
-        txid: txId,
+        txid: txHash,
       })
       return
     } catch (err) {

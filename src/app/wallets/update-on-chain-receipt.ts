@@ -102,7 +102,7 @@ const processTxForWallet = async (
 
           const result = await ledger.addOnChainTxReceive({
             liabilitiesAccountId,
-            txId: tx.rawTx.id,
+            txHash: tx.rawTx.id,
             sats,
             fee,
             usd,
@@ -117,7 +117,7 @@ const processTxForWallet = async (
           await notifications.onChainTransactionReceived({
             walletId: wallet.id,
             amount: sats,
-            txId: tx.rawTx.id,
+            txHash: tx.rawTx.id,
           })
         }
       }

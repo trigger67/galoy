@@ -13,7 +13,7 @@ type Deprecated = {
 }
 
 type BaseWalletTransaction = {
-  readonly id: LedgerTransactionId | TxId
+  readonly id: LedgerTransactionId | OnChainTxHash
   readonly walletId: WalletId | null
   readonly initiationVia: PaymentInitiationMethod
   readonly settlementVia: SettlementMethod
@@ -38,7 +38,7 @@ type WalletOnChainTransaction = BaseWalletTransaction & {
   readonly settlementVia: "onchain" | "intraledger"
   readonly otherPartyUsername: Username | null
   readonly addresses: OnChainAddress[]
-  readonly transactionHash: TxId
+  readonly transactionHash: OnChainTxHash
 }
 
 type WalletLnTransaction = BaseWalletTransaction & {

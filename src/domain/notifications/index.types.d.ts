@@ -4,7 +4,7 @@ type NotificationsServiceError = import("./errors").NotificationsServiceError
 type OnChainTxReceivedArgs = {
   walletId: WalletId
   amount: Satoshis
-  txId: TxId
+  txHash: OnChainTxHash
 }
 
 type LnPaymentReceivedArgs = {
