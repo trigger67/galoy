@@ -1,10 +1,9 @@
 import { Types as MongooseTypes } from "mongoose"
-import { sat2btc } from "@core/utils"
-import { PriceHistory } from "@services/mongoose/schema"
+import { PriceHistory } from "@services/price/schema"
 import { chunk, generateSatoshiPriceHistory } from "test/helpers"
 
 describe("Price history", () => {
-  it("generates 1 year of price data", async () => {
+  it("generates 1 year of data", async () => {
     const pair = "BTC/USD"
     const exchange = "bitfinex"
     let doc = await PriceHistory.findOne({
@@ -26,7 +25,7 @@ describe("Price history", () => {
         update: {
           $push: {
             "pair.exchange.price": {
-              $each: c.map((d) => ({ _id: d.date, o: sat2btc(d.price) })),
+              $each: c.map((d) => ({ _id: d.date, o: d.price / Math.pow(10, 8) })),
             },
           },
         },

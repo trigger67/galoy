@@ -1,3 +1,4 @@
+import { createHttpTerminator } from "http-terminator"
 import { sleep } from "@core/utils"
 import { yamlConfig, JWT_SECRET } from "@config/app"
 import { createTestClient } from "apollo-server-integration-testing"
