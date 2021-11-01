@@ -1,17 +1,17 @@
-import { getCurrentPrice } from "@services/realtime-price"
-import { sendBalanceToUsers } from "@servers/daily-balance-notification"
-import { User } from "@services/mongoose/schema"
 import { ledger } from "@services/mongodb"
+import { PriceService } from "@services/price"
+import { User } from "@services/mongoose/schema"
+import { sendBalanceToUsers } from "@servers/daily-balance-notification"
+
 jest.mock("@services/notifications/notification")
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { sendNotification } = require("@services/notifications/notification")
 
-jest.mock("@services/realtime-price", () => require("test/mocks/realtime-price"))
-
 let price
 
 beforeAll(async () => {
-  price = await getCurrentPrice()
+  price = await PriceService().getCurrentPrice()
+  if (price instanceof Error) throw price
   jest
     .spyOn(User, "getVolume")
     .mockImplementation(() => ({ outgoingSats: 1000, incomingSats: 1000 }))

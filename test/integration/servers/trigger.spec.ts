@@ -22,12 +22,11 @@ import { addInvoice } from "@app/wallets"
 import { getHash } from "@core/utils"
 import { ledger } from "@services/mongodb"
 import { getTitle } from "@services/notifications/payment"
-import { getCurrentPrice } from "@services/realtime-price"
 import { TxStatus } from "@domain/wallets"
 import { getBTCBalance } from "test/helpers/wallet"
+import { PriceService } from "@services/price"
 
 jest.mock("@services/notifications/notification")
-jest.mock("@services/realtime-price", () => require("test/mocks/realtime-price"))
 jest.mock("@services/phone-provider", () => require("test/mocks/phone-provider"))
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

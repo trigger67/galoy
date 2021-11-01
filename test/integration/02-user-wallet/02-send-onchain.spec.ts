@@ -32,7 +32,6 @@ import * as Wallets from "@app/wallets"
 import { TwoFAError, TransactionRestrictedError } from "@core/error"
 import { getBTCBalance, getRemainingTwoFALimit } from "test/helpers/wallet"
 
-jest.mock("@services/realtime-price", () => require("test/mocks/realtime-price"))
 jest.mock("@services/phone-provider", () => require("test/mocks/phone-provider"))
 jest.mock("@services/notifications/notification")
 
